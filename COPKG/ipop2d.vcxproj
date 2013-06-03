@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="PreBuildCmds;PreBuildTargets;Build;PostBuildCmds;PostBuildTargets" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup Label="ConfigurationSettings">
+		<CoAppEtcDirectory>$(registry:HKEY_LOCAL_MACHINE\Software\Outercurve\CoApp.Powershell\etc)</CoAppEtcDirectory>
+		<ConfigurationType>Application</ConfigurationType>
+		<Defines>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;CHUNKSIZE=65536</Defines>
+		<Libraries>c-client.lib;ws2_32.lib;winmm.lib;advapi32.lib;secur32.lib;crypt32.lib</Libraries>
+		<IncludeDirectories>$(MSBuildThisFileDirectory)../c-client/</IncludeDirectories>
+	</PropertyGroup>
+
+	<Import Condition="Exists('$(CoAppEtcDirectory)\common-header.vcxproj')" Project="$(CoAppEtcDirectory)\common-header.vcxproj" />
+  
+	<ItemGroup>
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\src\ipopd\ipop2d.c" />
+	</ItemGroup>
+  
+	<Import Condition="Exists('$(CoAppEtcDirectory)\common-footer.vcxproj')" Project="$(CoAppEtcDirectory)\common-footer.vcxproj" />
+</Project>

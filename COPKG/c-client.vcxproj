@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project InitialTargets="testing" DefaultTargets="PreBuildCmds;PreBuildTargets;Build;PostBuildCmds;PostBuildTargets" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<PropertyGroup Label="ConfigurationSettings">
+		<CoAppEtcDirectory>$(registry:HKEY_LOCAL_MACHINE\Software\Outercurve\CoApp.Powershell\etc)</CoAppEtcDirectory>
+		<ConfigurationType>DynamicLibrary</ConfigurationType>
+		<PreBuild>
+			REM @echo off 
+			echo on 
+			
+			pushd $(MSBuildThisFileDirectory)\..
+			
+			mkdir c-client
+			copy src\c-client\*.* c-client
+			copy src\charset\*.* c-client
+			copy src\osdep\nt\*.* c-client
+			
+			cd c-client
+			copy ip6_nt.c ip_nt.c
+			copy os_nt.h osdep.h
+			cmd /c drivers.bat imap nntp pop3 mbx mtx tenex unix dummy
+			cmd /c setproto.bat mbx unix
+			echo ssl_onceonlyinit (); >> linkage.c
+			cmd /c mkauths.bat ext gss md5 pla log
+			echo mail_versioncheck (CCLIENTVERSION); >> linkage.c
+			
+			popd
+		</PreBuild>
+		<PostBuild></PostBuild>
+		<PreBuildTargets></PreBuildTargets>
+		<PostBuildTargets></PostBuildTargets>
+		<Defines>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;CHUNKSIZE=65536</Defines>
+		<Libraries></Libraries>
+	</PropertyGroup>
+
+	<Import Condition="Exists('$(CoAppEtcDirectory)\common-header.vcxproj')" Project="$(CoAppEtcDirectory)\common-header.vcxproj" />
+
+	<Target Name="testing" >
+		<Message Text="$(CoAppEtcDirectory)\common-header.vcxproj" Importance="high" />
+	</Target>
+	
+	<ItemGroup>
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\mail.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\misc.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\fdstring.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\flstring.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\netmsg.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\newsrc.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\rfc822.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\smanager.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\utf8.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\utf8aux.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\imap4r1.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\nntp.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\pop3.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\smtp.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\os_w2k.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\mbxnt.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\mtxnt.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\tenexnt.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\unixnt.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\dummynt.c" />
+		<ClCompile Include="$(MSBuildThisFileDirectory)\..\c-client\pseudo.c" />
+		
+	</ItemGroup>
+  
+	<Import Condition="Exists('$(CoAppEtcDirectory)\common-footer.vcxproj')" Project="$(CoAppEtcDirectory)\common-footer.vcxproj" />
+	
+</Project>

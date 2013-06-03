@@ -1,33 +1,32 @@
-#product-info
-{
-    product-name: "uwimap";
-    version: "2007f";
-    original-source-location: "ftp://ftp.cac.washington.edu/mail/imap.tar.Z";
-    original-source-website: "http://www.washington.edu/imap/";
-    license: "Apache License 2.0";
-    packager: "Rafael Rivera <rafael@withinwindows.com>";
-}
+@import default_tools;
 
-default
-{
-    compiler: vc10;
-    platform: x86;
- 
-    targets:
-    {
-      "c-client\cclient.lib",
-      "imapd\imapd.exe",
-      "ipopd\ipop2d.exe",
-      "ipopd\ipop3d.exe",
-      "mailutil\mailutil.exe",
-      "mtest\mtest.exe"
+default {
+    // ("V110,V100", "win32,X64", "Release,Debug", "Dynamic,Static","c-client,mtest,mailutil,imapd,ipopd") => {
+	("V110,V100", "win32", "Release", "Static","c-client,mtest,mailutil,imapd,ipop2d,ipop3d") => {
+        .PushEnvironment{};
+        .LoadSystemEnvironment{};
+        .Message.Text = @"envTarg = vc_${0}_${1}   --  ${2}  ${3}";
+        
+        .SetEnvironmentFromTarget.Target = "VC_${0}_${1}";
+        
+        .Message.Text = @"EnvValid = $(IsEnvironmentValid)";
+
+	   .Exec {
+            Condition="$(IsEnvironmentValid)";
+            Command = @"msbuild ${4}.vcxproj /p:PlatformToolset=${0};Platform=${1};Configuration=${2};UsesConfigurationType=${3}";
+        };
+		
+        .PopEnvironment{};
     };
- 
-    build-command: @"
-      nmake /f makefile.w2k build
-    ";
- 
-    clean-command: @"
-      nmake /f makefile.w2k clean
-    ";
-}
+};
+
+clean {
+    .RemoveDir.Directories = @"intermediate";
+	.RemoveDir.Directories = @"$(MSBuildThisFileDirectory)\..\c-client";
+};
+
+nuke {
+    .RemoveDir.Directories = @"output";
+	.RemoveDir.Directories = @"intermediate";
+	.RemoveDir.Directories = @"$(MSBuildThisFileDirectory)\..\c-client";
+};
