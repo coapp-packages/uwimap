@@ -30,7 +30,7 @@
 		<PreBuildTargets></PreBuildTargets>
 		<PostBuildTargets></PostBuildTargets>
 		<Defines>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;CHUNKSIZE=65536</Defines>
-		<Libraries></Libraries>
+		<Libraries>ws2_32.lib;winmm.lib;advapi32.lib;secur32.lib;crypt32.lib</Libraries>
 	</PropertyGroup>
 
 	<Import Condition="Exists('$(CoAppEtcDirectory)\common-header.vcxproj')" Project="$(CoAppEtcDirectory)\common-header.vcxproj" />

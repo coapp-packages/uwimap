@@ -1,0 +1,58 @@
+@import @"version.inc";
+
+nuget {
+	// the nuspec file metadata. Gets created/updated on build
+	nuspec {
+		id = uwimap;
+		version : 11.07.22.1 ;
+		title: UW IMAP Library;
+		authors: {Mark J. Cox, Ralf S. Engelschall, Dr. Stephen Henson, Ben Laurie, Garrett Serack, Tim Rogers};
+		owners: {CoApp Project, Garrett Serack};
+		licenseUrl: "http://www.apache.org/licenses/LICENSE-2.0";
+		projectUrl: "https://github.com/coapp-packages/uwimap";
+		iconUrl: "https://secure.gravatar.com/avatar/f2e6a296c421c2ec7dde81bcd6ef1391?s=128&r=g&d=retro";
+		requireLicenseAcceptance:false;
+		summary:The UW Imap Library;
+		description: @"IMAP (Internet Message Access Protocol) is a method of accessing electronic messages kept on a (possibly shared) mail server. This site provides information about and links to the University of Washington IMAP toolkit (IMAP-supporting software developed by the UW) and two IMAP-related mailing lists hosted by the UW.
+		The UW IMAP tookit includes the following:
+
+c‑client library: an API (application programming interface) used to build email clients and servers, including support for IMAP,POP3, SMTP and NNTP protocols and for local mailbox file access on Unix and Windows
+UW's POP2 (ipop2d), POP3 (ipop3d) and IMAP4rev1 (imapd) servers
+mailutil: a utility program which helps manage email mailboxes (both local and IMAP/POP3/NNTP)
+dmail: an MDA (Mail Delivery Agent) for use with procmail
+tmail: an MDA for use with the system mailer (e.g. sendmail, postfix, etc.)
+
+	    Project homepage:  http://www.washington.edu/imap/";
+		releaseNotes: "Release 2011-07-22 of the UW IMAP library.";
+		copyright: Copyright 2013;
+		tags: { uwimap, c-client, native, CoApp };
+
+	};
+    
+	// the files that go into the content folders
+	// (inserted into the nuspec file)
+	files {
+		include: { ..\c-client\*.h };
+        
+        source += { ..\c-client\**\* };
+        
+		docs: {  ..\docs\**\* };
+        
+		("V110,V100", "win32,X64", "Release,Debug", "Static") => {
+			[${0},${1},${2},${3}] {
+				lib+=         { .\output\${0}\${1}\${2}\${3}\c-client.lib };
+				tools+=       { .\output\${0}\${1}\${2}\${3}\*.exe };
+			};
+		};
+	};
+	
+	// the VC++ .props file that gets generated and inserted into the ${d_content} folder
+	props { 
+	};
+
+	// the VC++ .targets file that gets generated and inserted into the ${d_content} folder
+	targets {
+		Defines += HAS_CCLIENT;        
+	};
+}
+

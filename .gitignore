@@ -1,0 +1,4 @@
+COPKG/Intermediate/
+COPKG/Output/
+c-client/
+*.nupkg

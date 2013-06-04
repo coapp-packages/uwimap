@@ -1,8 +1,10 @@
 @import default_tools;
 
 default {
-    // ("V110,V100", "win32,X64", "Release,Debug", "Dynamic,Static","c-client,mtest,mailutil,imapd,ipopd") => {
-	("V110,V100", "win32", "Release", "Static","c-client,mtest,mailutil,imapd,ipop2d,ipop3d") => {
+    
+	// IMapUW / C-Client only supports linking statically. 
+	
+	("V110,V100", "win32,X64", "Release,Debug", "Static","c-client,mtest,mailutil,imapd,ipop2d,ipop3d") => {
         .PushEnvironment{};
         .LoadSystemEnvironment{};
         .Message.Text = @"envTarg = vc_${0}_${1}   --  ${2}  ${3}";
