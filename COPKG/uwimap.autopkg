@@ -4,7 +4,7 @@ nuget {
 	// the nuspec file metadata. Gets created/updated on build
 	nuspec {
 		id = uwimap;
-		version : 11.07.22.1 ;
+		version : 11.07.22.3;
 		title: UW IMAP Library;
 		authors: {Mark J. Cox, Ralf S. Engelschall, Dr. Stephen Henson, Ben Laurie, Garrett Serack, Tim Rogers};
 		owners: {CoApp Project, Garrett Serack};
@@ -37,7 +37,7 @@ tmail: an MDA for use with the system mailer (e.g. sendmail, postfix, etc.)
         source += { ..\c-client\**\* };
         
 		docs: {  ..\docs\**\* };
-        
+     
 		("V110,V100", "win32,X64", "Release,Debug", "Static") => {
 			[${0},${1},${2},${3}] {
 				lib+=         { .\output\${0}\${1}\${2}\${3}\c-client.lib };
